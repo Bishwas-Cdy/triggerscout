@@ -2,7 +2,7 @@
 
 **Evidence-backed GTM signal monitoring for public company webpages.**
 
-TriggerScout watches selected pages over time, removes webpage noise, computes compact deterministic diffs, and turns meaningful changes into safe, explainable GTM recommendations. It is built as a portfolio project for AI GTM Engineering: the emphasis is not a chat wrapper, but reliable signal collection, cost control, structured AI output, and automation-ready APIs.
+TriggerScout monitors selected company pages over time, removes webpage noise, detects meaningful changes, and converts them into structured GTM signals and automation-ready actions.
 
 > No frontend and no fake scheduler. Swagger at `/docs` is the demo UI; cron or n8n calls the explicit scan endpoint.
 
