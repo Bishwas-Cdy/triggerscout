@@ -1,0 +1,45 @@
+[
+  {
+    "name": "sales hiring",
+    "company_name": "Acme",
+    "before": "We are a small team serving startups.",
+    "after": "We're hiring 20 account executives across Europe.",
+    "expected_trigger": "SALES_TEAM_EXPANSION"
+  },
+  {
+    "name": "funding",
+    "company_name": "Northstar",
+    "before": "Northstar is bootstrapped.",
+    "after": "Northstar raised $25M in Series B funding.",
+    "expected_trigger": "FUNDING"
+  },
+  {
+    "name": "enterprise launch",
+    "company_name": "Orbit",
+    "before": "One plan for growing teams.",
+    "after": "Introducing our new enterprise plan with SSO and audit logs.",
+    "expected_trigger": "ENTERPRISE_EXPANSION"
+  },
+  {
+    "name": "international expansion",
+    "company_name": "Beacon",
+    "before": "Available in the United States.",
+    "after": "Our service is now available in Germany and France.",
+    "expected_trigger": "MARKET_EXPANSION"
+  },
+  {
+    "name": "pricing change",
+    "company_name": "Atlas",
+    "before": "Pro costs $79 per month.",
+    "after": "Pricing updated: Pro now starts at $99 per month.",
+    "expected_trigger": "PRICING_CHANGE"
+  },
+  {
+    "name": "irrelevant copyright noise",
+    "company_name": "Acme",
+    "before": "Copyright 2025 Acme",
+    "after": "Copyright 2026 Acme",
+    "expected_trigger": "NO_MEANINGFUL_CHANGE"
+  }
+]
+

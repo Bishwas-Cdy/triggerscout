@@ -1,0 +1,92 @@
+{
+  "name": "TriggerScout - Scheduled GTM Signal Scan",
+  "nodes": [
+    {
+      "parameters": {"rule": {"interval": [{"field": "hours", "hoursInterval": 6}]}},
+      "id": "schedule",
+      "name": "Every 6 Hours",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 0]
+    },
+    {
+      "parameters": {"url": "http://host.docker.internal:8000/companies", "options": {}},
+      "id": "companies",
+      "name": "Get Monitored Companies",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [220, 0]
+    },
+    {
+      "parameters": {"fieldToSplitOut": "", "options": {}},
+      "id": "split",
+      "name": "Company Items",
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [440, 0]
+    },
+    {
+      "parameters": {
+        "conditions": {"boolean": [{"value1": "={{ $json.active }}", "value2": true}]}
+      },
+      "id": "active",
+      "name": "Active Only",
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2,
+      "position": [660, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=http://host.docker.internal:8000/companies/{{ $json.id }}/scan",
+        "options": {"timeout": 30000}
+      },
+      "id": "scan",
+      "name": "Scan Company",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [880, 0]
+    },
+    {
+      "parameters": {
+        "conditions": {"number": [{"value1": "={{ $json.meaningful_changes }}", "operation": "gt", "value2": 0}]}
+      },
+      "id": "meaningful",
+      "name": "Meaningful Trigger?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [1100, 0]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://hooks.slack.com/services/REPLACE/ME",
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={\"text\":\"TriggerScout found {{ $json.meaningful_changes }} signal(s) for {{ $json.company_name }}. Review before taking action.\"}",
+        "options": {}
+      },
+      "id": "notify",
+      "name": "Notify for Human Review (Configure Me)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [1320, -100],
+      "disabled": true
+    }
+  ],
+  "connections": {
+    "Every 6 Hours": {"main": [[{"node": "Get Monitored Companies", "type": "main", "index": 0}]]},
+    "Get Monitored Companies": {"main": [[{"node": "Company Items", "type": "main", "index": 0}]]},
+    "Company Items": {"main": [[{"node": "Active Only", "type": "main", "index": 0}]]},
+    "Active Only": {"main": [[{"node": "Scan Company", "type": "main", "index": 0}]]},
+    "Scan Company": {"main": [[{"node": "Meaningful Trigger?", "type": "main", "index": 0}]]},
+    "Meaningful Trigger?": {"main": [[{"node": "Notify for Human Review (Configure Me)", "type": "main", "index": 0}], []]}
+  },
+  "active": false,
+  "settings": {"executionOrder": "v1"},
+  "versionId": "00000000-0000-4000-8000-000000000001",
+  "meta": {"templateCredsSetupCompleted": false},
+  "tags": []
+}
+

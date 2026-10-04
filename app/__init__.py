@@ -1,0 +1,1 @@
+"""TriggerScout application package."""
